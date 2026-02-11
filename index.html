@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Juanjo 💘 Kriz</title>
 
-<!-- EmailJS (opcional) -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
 <style>
 :root{
   --bg1:#f7d4dc;
@@ -33,7 +30,7 @@ body{
     radial-gradient(900px 650px at 18% 12%, rgba(255,255,255,.55), transparent 62%),
     radial-gradient(900px 650px at 78% 18%, rgba(255,255,255,.35), transparent 62%),
     linear-gradient(145deg, var(--bg1), var(--bg2));
-  overflow:hidden;
+  overflow:hidden; /* el scroll es interno */
   color: var(--ink);
 }
 
@@ -61,7 +58,7 @@ canvas{
   inset: 0;
   z-index: 3;
   display:block;
-  overflow-y:auto;
+  overflow-y:auto;                 /* ✅ scroll iPhone */
   -webkit-overflow-scrolling:touch;
   padding: 22px;
 }
@@ -108,6 +105,8 @@ canvas{
   font-weight: 1000;
   text-align:center;
   margin: 10px 0 8px;
+  position:relative;
+  z-index:2;
 }
 .subtitle{
   text-align:center;
@@ -115,15 +114,17 @@ canvas{
   margin: 0 0 18px;
   font-weight: 800;
   line-height:1.35;
+  position:relative;
+  z-index:2;
 }
 
-/* Animación sutil de “respirar” en el fondo de la card */
+/* Animación sutil de “respirar” en el fondo */
 .card:before{
   content:"";
   position:absolute; inset:-40px;
   background:
-    radial-gradient(500px 320px at 30% 20%, rgba(255,45,85,.18), transparent 60%),
-    radial-gradient(500px 320px at 70% 65%, rgba(255,122,162,.16), transparent 62%);
+    radial-gradient(520px 340px at 30% 22%, rgba(255,45,85,.18), transparent 60%),
+    radial-gradient(520px 340px at 70% 70%, rgba(255,122,162,.16), transparent 62%);
   filter: blur(10px);
   opacity:.85;
   animation: breathe 6.5s ease-in-out infinite;
@@ -140,8 +141,9 @@ canvas{
   place-items:center;
   gap: 14px;
   padding: 10px 0 0;
+  position:relative;
+  z-index:2;
 }
-
 .heartBtn{
   width: 150px;
   height: 150px;
@@ -156,14 +158,12 @@ canvas{
   display:grid;
   place-items:center;
   user-select:none;
-  transform: translateZ(0);
   animation: floaty 3.8s ease-in-out infinite;
 }
 @keyframes floaty{
   0%,100%{ transform: translateY(0); }
   50%{ transform: translateY(-6px); }
 }
-
 .bigHeart{
   width: 60px;
   height: 60px;
@@ -185,13 +185,14 @@ canvas{
   0%,100%{ transform: rotate(-45deg) scale(1); }
   50%{ transform: rotate(-45deg) scale(1.12); }
 }
-
 .hint{
   font-weight: 850;
   color: rgba(0,0,0,.55);
   font-size: 13px;
   text-align:center;
   line-height:1.35;
+  position:relative;
+  z-index:2;
 }
 
 /* BOTONES */
@@ -202,7 +203,8 @@ canvas{
   align-items:center;
   gap: 14px;
   margin-top: 14px;
-  min-height: 140px;
+  min-height: 150px;
+  z-index:2;
 }
 .btn{
   border:0;
@@ -238,8 +240,9 @@ canvas{
   border: 1px solid rgba(255,255,255,.72);
   box-shadow: 0 10px 24px rgba(0,0,0,.08);
   margin-top:18px;
+  position:relative;
+  z-index:2;
 }
-
 .loveText{
   white-space:pre-wrap;
   line-height: 1.55;
@@ -247,7 +250,6 @@ canvas{
   font-weight: 780;
   font-size: 16px;
 }
-
 .timerGrid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -268,10 +270,10 @@ canvas{
   display:flex;
   justify-content:center;
   gap:10px;
-  margin-top: 10px;
+  margin-top: 12px;
   flex-wrap:wrap;
 }
-.smallBtn{
+.smallBtn, .linkBtn{
   padding: 10px 12px;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,.75);
@@ -279,6 +281,26 @@ canvas{
   font-weight: 950;
   cursor:pointer;
   box-shadow: 0 10px 22px rgba(0,0,0,.08);
+  text-decoration:none;
+  color: rgba(0,0,0,.72);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+
+.spotifyWrap{
+  margin-top: 12px;
+  border-radius: 16px;
+  overflow:hidden;
+  border: 1px solid rgba(255,255,255,.75);
+  box-shadow: 0 10px 24px rgba(0,0,0,.08);
+  background: rgba(255,255,255,.6);
+}
+.spotifyWrap iframe{
+  width:100%;
+  height: 86px;
+  border:0;
+  display:block;
 }
 
 .toast{
@@ -319,29 +341,23 @@ canvas{
         <div class="badge" id="badgeRight">Toca el corazón</div>
       </div>
 
-      <!-- AUDIO (suave) -->
-      <audio id="bgm" preload="auto" loop>
-        <!-- Música suave libre. Si algún día deja de cargar, cámbialo por otro mp3 -->
-        <source src="https://cdn.pixabay.com/download/audio/2022/10/26/audio_4d5efae4d6.mp3?filename=romantic-piano-ambient-121918.mp3" type="audio/mpeg">
-      </audio>
-
       <!-- STEP 1 -->
       <section id="step1">
-        <div class="title">Mi amor… tengo una pregunta para ti</div>
+        <div class="title">Kriz… tengo una pregunta para ti</div>
         <div class="subtitle">Toca el corazón y deja que el momento haga lo suyo ✨</div>
 
         <div class="introWrap">
           <button class="heartBtn" id="heartStart" type="button" aria-label="Tocar corazón">
             <div class="bigHeart"></div>
           </button>
-          <div class="hint">La música empieza cuando tú tocas 💗</div>
+          <div class="hint">Después podrás lanzar corazones tocando la pantalla 💗</div>
         </div>
       </section>
 
       <!-- STEP 2 -->
       <section id="step2" class="hidden">
         <div class="title">¿Quieres ser mi Valentín? 💘</div>
-        <div class="subtitle">Respóndeme con el corazón. (sí, te estoy presionando 😌)</div>
+        <div class="subtitle">Respóndeme con el corazón…</div>
 
         <div class="btnArea" id="btnArea">
           <button class="btn btnYes" id="yesBtn" type="button">Sí, quiero 💗</button>
@@ -357,6 +373,26 @@ canvas{
           <div class="title" style="margin:0 0 8px;">Kriz ❤️</div>
           <p class="loveText" id="loveText"></p>
           <div style="font-weight:1000; color:rgba(0,0,0,.70); margin-top:10px;">— Juanjo</div>
+
+          <div class="controls" style="margin-top:14px;">
+            <button class="smallBtn" id="burstBtn">💥 Más corazones</button>
+            <a class="linkBtn" target="_blank" rel="noopener"
+               href="https://open.spotify.com/track/3WVIg40TvL2dGBHShZD8f7">
+              🎧 Abrir en Spotify
+            </a>
+          </div>
+
+          <div class="spotifyWrap" aria-label="Reproductor Spotify">
+            <iframe
+              src="https://open.spotify.com/embed/track/3WVIg40TvL2dGBHShZD8f7?utm_source=generator"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy">
+            </iframe>
+          </div>
+
+          <div class="hint" style="margin-top:10px;">
+            Nota: por políticas de iPhone/Spotify, toca ▶️ en el reproductor para que suene.
+          </div>
         </div>
 
         <div class="panel">
@@ -367,11 +403,6 @@ canvas{
             <div class="tile"><div class="num" id="h">00</div><div class="lab">horas</div></div>
             <div class="tile"><div class="num" id="m">00</div><div class="lab">minutos</div></div>
             <div class="tile"><div class="num" id="s">00</div><div class="lab">segundos</div></div>
-          </div>
-
-          <div class="controls">
-            <button class="smallBtn" id="burstBtn">💥 Más corazones</button>
-            <button class="smallBtn" id="musicBtn">🎵 Música</button>
           </div>
 
           <div class="hint" style="margin-top:10px;">Tip: toca la pantalla para explotar corazones 💗</div>
@@ -390,12 +421,11 @@ const CONFIG = {
   fromName: "Juanjo",
   toName: "Kriz",
   startDate: "2022-10-01T00:00:00-05:00",
-  notifyEmail: "ing.juanjoenriquez@gmail.com",
-
-  // ✅ Si quieres que llegue correo:
-  EMAILJS_PUBLIC_KEY: "4fB7EB9WHRZ8qpR7Y",
-  EMAILJS_SERVICE_ID: "service_vkn146h",
-  EMAILJS_TEMPLATE_ID: "template_7awan31",
+  // EmailJS opcional:
+  // EMAILJS_PUBLIC_KEY: "TU_PUBLIC_KEY",
+  // EMAILJS_SERVICE_ID: "TU_SERVICE_ID",
+  // EMAILJS_TEMPLATE_ID: "TU_TEMPLATE_ID",
+  // notifyEmail: "ing.juanjoenriquez@gmail.com",
 };
 
 const LOVE_MESSAGE =
@@ -413,8 +443,6 @@ const $ = (id)=>document.getElementById(id);
 const step1 = $("step1"), step2 = $("step2"), step3 = $("step3");
 const badgeRight = $("badgeRight");
 const toast = $("toast");
-const bgm = $("bgm");
-const musicBtn = $("musicBtn");
 
 /* ========= TOAST ========= */
 function showToast(text){
@@ -424,60 +452,7 @@ function showToast(text){
   showToast._t = setTimeout(()=>toast.classList.remove("show"), 1400);
 }
 
-/* ========= AUDIO (iPhone friendly) ========= */
-let musicOn = false;
-async function startMusic(){
-  try{
-    bgm.volume = 0.30; // suave
-    await bgm.play();
-    musicOn = true;
-    showToast("🎵 Música activada");
-    if(musicBtn) musicBtn.textContent = "🔇 Silenciar";
-  }catch(e){
-    // iPhone exige interacción: ya la hay, pero igual por si falla
-    showToast("🔇 Toca de nuevo para activar música");
-  }
-}
-function toggleMusic(){
-  if(!musicOn){
-    startMusic();
-  }else{
-    bgm.pause();
-    musicOn = false;
-    showToast("🔇 Música en pausa");
-    if(musicBtn) musicBtn.textContent = "🎵 Música";
-  }
-}
-
-/* ========= EMAILJS (opcional) ========= */
-function emailIsConfigured(){
-  return CONFIG.EMAILJS_PUBLIC_KEY && CONFIG.EMAILJS_SERVICE_ID && CONFIG.EMAILJS_TEMPLATE_ID;
-}
-try{
-  if(window.emailjs && emailIsConfigured()){
-    emailjs.init({ publicKey: CONFIG.EMAILJS_PUBLIC_KEY });
-  }
-}catch(e){}
-
-async function sendAnswerEmail(answer){
-  if(!window.emailjs || !emailIsConfigured()) return { ok:false, reason:"not_configured" };
-  const payload = {
-    to_email: CONFIG.notifyEmail,
-    to_name: CONFIG.fromName,
-    from_name: CONFIG.toName,
-    answer,
-    when: new Date().toLocaleString(),
-    user_agent: navigator.userAgent
-  };
-  try{
-    await emailjs.send(CONFIG.EMAILJS_SERVICE_ID, CONFIG.EMAILJS_TEMPLATE_ID, payload);
-    return { ok:true };
-  }catch(err){
-    return { ok:false, reason:"send_failed", error: err };
-  }
-}
-
-/* ========= CANVAS FX (corazones sutiles) ========= */
+/* ========= CANVAS FX ========= */
 const canvas = $("fx");
 const ctx = canvas.getContext("2d", { alpha:true });
 let W=0,H=0,DPR=1;
@@ -505,13 +480,11 @@ function drawHeart(x,y,s,rot,color,alpha){
   ctx.translate(x,y);
   ctx.rotate(rot);
   ctx.scale(s,s);
-
   ctx.beginPath();
   ctx.moveTo(0, -8);
   ctx.bezierCurveTo(8, -14, 16, -2, 0, 16);
   ctx.bezierCurveTo(-16, -2, -8, -14, 0, -8);
   ctx.closePath();
-
   const g = ctx.createRadialGradient(-3,-6,2, 0,0,20);
   g.addColorStop(0, "rgba(255,255,255,.55)");
   g.addColorStop(0.35, color);
@@ -536,23 +509,19 @@ function spawn(x,y,power=1){
   });
   if(parts.length > 340) parts.splice(0, parts.length-340);
 }
-
 function burst(x,y,n=28){
   for(let i=0;i<n;i++) spawn(x,y, rand(0.75,1.2));
 }
-
 function startLoop(){
   if(running) return;
   running = true;
   requestAnimationFrame(loop);
 }
-
 function loop(t){
   const dt = Math.min(0.03, (t-last)/1000);
   last = t;
   ctx.clearRect(0,0,W,H);
 
-  // glow sutil
   ctx.save();
   ctx.globalAlpha = 0.12;
   const glow = ctx.createRadialGradient(W*0.5,H*0.35,20, W*0.5,H*0.35, Math.min(W,H)*0.62);
@@ -580,19 +549,15 @@ function loop(t){
 $("loveText").textContent = LOVE_MESSAGE;
 
 $("heartStart").addEventListener("click", ()=>{
-  // ✅ inicia música con interacción real (iPhone friendly)
-  startMusic();
   startLoop();
-
   badgeRight.textContent = "Respóndeme…";
   step1.classList.add("hidden");
   step2.classList.remove("hidden");
-
   burst(W*0.5, H*0.45, 18);
   showToast("💘 Te tengo una pregunta");
 });
 
-/* NO IMPOSIBLE (siempre se escapa, incluso en móvil) */
+/* NO imposible */
 const noBtn = $("noBtn");
 const yesBtn = $("yesBtn");
 const btnArea = $("btnArea");
@@ -616,41 +581,24 @@ function moveNo(){
   const rect = canvas.getBoundingClientRect();
   burst((area.left + x + btn.width/2) - rect.left, (area.top + y + btn.height/2) - rect.top, 10);
 }
-
 noBtn.addEventListener("mouseenter", moveNo);
 noBtn.addEventListener("pointerdown", (e)=>{ e.preventDefault(); moveNo(); }, { passive:false });
 noBtn.addEventListener("click", (e)=>{ e.preventDefault(); moveNo(); });
 
 /* YES */
-yesBtn.addEventListener("click", async ()=>{
-  badgeRight.textContent = "💌 Enviando…";
-  showToast("💌 Guardando respuesta");
-
-  // Si ya configuraste EmailJS, aquí envía
-  const res = await sendAnswerEmail("SÍ");
-  if(res.ok) showToast("✅ Te llegó al correo");
-  else showToast("✅ Listo (correo opcional)");
-
+yesBtn.addEventListener("click", ()=>{
+  badgeRight.textContent = "💖";
   step2.classList.add("hidden");
   step3.classList.remove("hidden");
-
   burst(W*0.5, H*0.52, 70);
-
-  // asegura música
-  if(!musicOn) startMusic();
+  showToast("💗 Te amo");
 });
 
-/* EXTRA CONTROLES */
+/* EXTRA */
 $("burstBtn").addEventListener("click", ()=>{
-  burst(W*0.5, H*0.50, 50);
+  burst(W*0.5, H*0.50, 55);
   showToast("💥 Boom");
 });
-
-if(musicBtn){
-  musicBtn.addEventListener("click", toggleMusic);
-}
-
-/* Explosión al tocar pantalla en el resultado */
 document.addEventListener("click", (e)=>{
   if(step3.classList.contains("hidden")) return;
   const r = canvas.getBoundingClientRect();
